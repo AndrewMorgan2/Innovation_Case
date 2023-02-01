@@ -1,63 +1,92 @@
+FROM nvidia/cuda:8.0-cudnn5-runtime-ubuntu14.04
 
-# Download base image ubuntu 22.04
-FROM ubuntu:18.04
+RUN mkdir OpenCV && cd OpenCV
 
-ENV LUA_VERSION 5.1
-ENV LUA_PACKAGE lua${LUA_VERSION}
-ENV LUAROCKS_VERSION 3.0.3
+RUN apt-get update && apt-get install -y \
+  build-essential \
+  checkinstall \
+  cmake \
+  pkg-config \
+  yasm \
+  libtiff5-dev \
+  libjpeg-dev \
+  libjasper-dev \
+  libavcodec-dev \
+  libavformat-dev \
+  libswscale-dev \
+  libdc1394-22-dev \
+ # libxine-dev \
+  libgstreamer0.10-dev \
+  libgstreamer-plugins-base0.10-dev \
+  libv4l-dev \
+  python-dev \
+  python-numpy \
+  python-pip \
+  libtbb-dev \
+  libeigen3-dev \
+  libqt4-dev \
+  libgtk2.0-dev \
+  # Doesn't work libfaac-dev \
+  libmp3lame-dev \
+  libopencore-amrnb-dev \
+  libopencore-amrwb-dev \
+  libtheora-dev \
+  libvorbis-dev \
+  libxvidcore-dev \
+  x264 \ 
+  v4l-utils \
+ # Doesn't work ffmpeg \
+  libgtk2.0-dev \
+#  zlib1g-dev \
+#  libavcodec-dev \
+  unzip \
+  libhdf5-dev \
+  wget \
+  sudo
+    
 
-# Update Ubuntu Software repository
-RUN apt-get -y update
-RUN apt-get -y upgrade
-RUN apt-get -y install sudo
-RUN apt-get -y install software-properties-common
+RUN cd /opt && \
+  wget https://github.com/daveselinger/opencv/archive/3.1.0-with-cuda8.zip -O opencv-3.1.0.zip -nv && \
+  unzip opencv-3.1.0.zip && \
+  mv opencv-3.1.0-with-cuda8 opencv-3.1.0 && \
+  cd opencv-3.1.0 && \
+  rm -rf build && \
+  mkdir build && \
+  cd build && \
+  cmake -D CUDA_ARCH_BIN=3.2 \
+    -D CUDA_ARCH_PTX=3.2 \
+    -D CMAKE_BUILD_TYPE=RELEASE \
+    -D CMAKE_INSTALL_PREFIX=/usr/local \
+    -D WITH_TBB=ON \
+    -D BUILD_NEW_PYTHON_SUPPORT=ON \
+    -D WITH_V4L=ON \
+    -D BUILD_TIFF=ON \
+    -D WITH_QT=ON \
+    -D ENABLE_PRECOMPILED_HEADERS=OFF \
+ #   -D USE_GStreamer=ON \
+    -D WITH_OPENGL=ON .. && \
+  make -j4 && \
+  make install && \
+  echo "/usr/local/lib" | sudo tee -a /etc/ld.so.conf.d/opencv.conf && \
+  ldconfig
+RUN cp /opt/opencv-3.1.0/build/lib/cv2.so /usr/lib/python2.7/dist-packages/cv2.so
 
-#Trying to sort libqt4-dev error
-RUN add-apt-repository -y ppa:ubuntuhandbook1/ppa
-RUN apt-get -y install qt4-dev-tools libqt4-dev libqtcore4 libqtgui4
-#Trying to sort ipython package
-RUN apt-get -y install python
-RUN apt-get -y install python-pip
-# Install packages necessary for Lua, Luarocks.
-RUN apt-get -y install ${LUA_PACKAGE}
-RUN apt-get -y install ${LUA_PACKAGE}-dev
-RUN apt-get -y install luajit
-RUN apt-get -y install luarocks
 RUN apt-get -y install git 
-#Caused errors and im  not sure what they are for
-RUN apt-get -y install git bash zip unzip curl
-RUN ln -s /usr/bin/luarocks /usr/bin/luarocks-$LUA_VERSION
-RUN luarocks install lua-cjson
-
-#busted dependencies 
-RUN luarocks install lua_cliargs
-RUN luarocks install luafilesystem
-RUN luarocks install luasystem
-RUN luarocks install dkjson
-RUN luarocks install say
-RUN luarocks install luassert
-RUN luarocks install lua-term 
-RUN luarocks install penlight
-RUN luarocks install mediator_lua
-
-RUN luarocks install busted
-#We now need to install Torch
-RUN git clone https://github.com/AndrewMorgan2/distro.git /usr/local/torch --recursive
-RUN git init
-RUN bash /usr/local/torch/install-deps;
-RUN /usr/local/torch/clean.sh 
-RUN TORCH_LUA_VERSION=LUA51 /usr/local/torch/install.sh -b
-#CV
+#Fixing github directory issue
 RUN git config --global url.https://github.com/.insteadOf git://github.com/
-RUN apt-get -y install libmatio4
-RUN ln -s /usr/lib/x86_64-linux-gnu/libmatio.so.4 /usr/lib/x86_64-linux-gnu/libmatio.so
+#We now need to install Torch dependencies
+RUN git clone https://github.com/AndrewMorgan2/distro.git /usr/local/torch --recursive
+RUN cd /usr/local/torch && git init
+RUN bash /usr/local/torch/install-deps;
+#Install Test Torch
+RUN /usr/local/torch/install.sh -b
+RUN . /usr/local/torch/install/bin/torch-activate && /usr/local/torch/test.sh
 
-RUN git clone https://github.com/VisionLabs/torch-opencv.git
-RUN cd torch-opencv && luarocks make cv-scm-1.rockspec
-#Matio
-RUN /usr/local/torch/install/bin/luarocks install matio
+##Luarocks 
+RUN luarocks install matio
+RUN luarocks install cv
 
-####
-ENV LUA_PATH=/usr/local/share/lua/5.3/?.lua;/usr/local/share/lua/5.3/?/init.lua;/usr/local/lib/lua/5.3/?.lua;/usr/local/lib/lua/5.3/?/init.lua;/usr/share/lua/5.3/?.lua;/usr/share/lua/5.3/?/init.lua;/usr/lib/lua/5.3/?.lua;/usr/lib/lua/5.3/?/init.lua;/usr/share/lua/common/?.lua;/usr/share/lua/common/?/init.lua;./?.lua;./?/init.lua
-ENV LUA_CPATH=/usr/local/lib/lua/5.3/?.so;/usr/local/lib/lua/5.3/loadall.so;/usr/lib/lua/5.3/?.so;/usr/lib/lua/5.3/loadall.so;./?.so
-#Make the env paths in the github
+##Python env
+RUN pip install chumpy
+RUN pip install opendr
+RUN pip install opencv
