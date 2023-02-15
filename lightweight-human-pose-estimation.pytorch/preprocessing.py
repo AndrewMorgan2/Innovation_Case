@@ -72,4 +72,4 @@ net = PoseEstimationWithMobileNet()
 checkpoint = torch.load('checkpoint_iter_370000.pth', map_location='cpu')
 load_state(net, checkpoint)
 
-get_rect(net.cuda(), ["/home/andrew/pifuhd/sample_images/test.png"], 512)
+get_rect(net.cuda(), ["../pifuhd/sample_images/test.png"], 512)
