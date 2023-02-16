@@ -4,3 +4,5 @@ pifuhd/checkpoints/pifuhd.pt
 pifuhd/checkpoints/pifuhd.pt.1
 pifuhd/checkpoints/pifuhd.pt.2
 pifuhd/results/
+pifuhd/sample_images/
+pifuhd/logs/

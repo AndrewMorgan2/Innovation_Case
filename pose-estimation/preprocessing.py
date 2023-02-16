@@ -73,17 +73,17 @@ def get_rect(net, images, height_size):
         np.savetxt(rect_path, np.array(rects), fmt='%d')
 
 net = PoseEstimationWithMobileNet()
-checkpoint = torch.load('./pose-estimation/checkpoint_iter_370000.pth', map_location='cpu')
+checkpoint = torch.load('checkpoint_iter_370000.pth', map_location='cpu')
 load_state(net, checkpoint)
 
-onlyfiles = [f for f in listdir('./pifuhd/sample_images/') if isfile(join('./pifuhd/sample_images/', f))]
+onlyfiles = [f for f in listdir('../pifuhd/sample_images/') if isfile(join('../pifuhd/sample_images/', f))]
 
-onlyfiles = [f for f in onlyfiles if f.endswith('.png') if isfile(join('./pifuhd/sample_images/', f))]
+onlyfiles = [f for f in onlyfiles if f.endswith('.png') if isfile(join('../pifuhd/sample_images/', f))]
 
 path_to_files = []
 
 for x in onlyfiles:
-  path_to_files.append('./pifuhd/sample_images/' + x)
+  path_to_files.append('../pifuhd/sample_images/' + x)
 
 print(path_to_files)
 get_rect(net.cuda(), path_to_files, 512)

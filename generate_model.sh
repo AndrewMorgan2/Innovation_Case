@@ -1,7 +1,18 @@
-#Put all the sbatch shit here
+#!/bin/sh
+
+#SBATCH --job-name gen_model
+#SBATCH --nodes 1
+#SBATCH --time 00:30:00
+#SBATCH --account cosc027924
+#SBATCH -o ./logs/log_%j.out # STDOUT out
+#SBATCH -e ./logs/log_%j.err # STDERR out
+#SBATCH --partition=gpu
+#SBATCH --mem=16GB
 
 #Preprocess 
-#python ./pose-estimation/preprocessing.py
+cd pose-estimation
+python preprocessing.py
+cd ..
 
 #Run PIFu
 cd pifuhd
