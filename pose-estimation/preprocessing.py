@@ -13,7 +13,7 @@ from os.path import isfile, join
 
 def get_rect(net, images, height_size):
     net = net.eval()
-
+      
     stride = 8
     upsample_ratio = 4
     num_keypoints = Pose.num_kpts
@@ -24,7 +24,8 @@ def get_rect(net, images, height_size):
         img = cv2.imread(image, cv2.IMREAD_COLOR)
         orig_img = img.copy()
         orig_img = img.copy()
-        heatmaps, pafs, scale, pad = demo.infer_fast(net, img, height_size, stride, upsample_ratio, cpu=False)
+        #Setting cpu to false if we have gpu avaliable 
+        heatmaps, pafs, scale, pad = demo.infer_fast(net, img, height_size, stride, upsample_ratio, cpu=True)
 
         total_keypoints_num = 0
         all_keypoints_by_type = []
@@ -73,7 +74,10 @@ def get_rect(net, images, height_size):
         np.savetxt(rect_path, np.array(rects), fmt='%d')
 
 net = PoseEstimationWithMobileNet()
-checkpoint = torch.load('checkpoint_iter_370000.pth', map_location='cpu')
+
+cuda = torch.device('cuda:%d' % opt.gpu_id if torch.cuda.is_available() else 'cpu')
+
+checkpoint = torch.load('checkpoint_iter_370000.pth', map_location=cuda)
 load_state(net, checkpoint)
 
 onlyfiles = [f for f in listdir('../pifuhd/sample_images/') if isfile(join('../pifuhd/sample_images/', f))]
@@ -86,4 +90,5 @@ for x in onlyfiles:
   path_to_files.append('../pifuhd/sample_images/' + x)
 
 print(path_to_files)
-get_rect(net.cuda(), path_to_files, 512)
+#Was net.cude() but that only works with gpu 
+get_rect(net, path_to_files, 512)
