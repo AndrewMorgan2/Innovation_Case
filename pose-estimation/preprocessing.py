@@ -75,7 +75,7 @@ def get_rect(net, images, height_size):
 
 net = PoseEstimationWithMobileNet()
 
-cuda = torch.device('cuda:%d' % opt.gpu_id if torch.cuda.is_available() else 'cpu')
+cuda = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 
 checkpoint = torch.load('checkpoint_iter_370000.pth', map_location=cuda)
 load_state(net, checkpoint)

@@ -142,7 +142,7 @@ def recon(opt, use_rect=False):
     start_id = opt.start_id
     end_id = opt.end_id
 
-    cuda = torch.device('cuda:%d' % opt.gpu_id if torch.cuda.is_available() else 'cpu')
+    cuda = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 
     state_dict = None
     if state_dict_path is not None and os.path.exists(state_dict_path):

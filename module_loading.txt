@@ -11,3 +11,6 @@ module load libs/opencv/4.0.0
 source /user/work/jp19060/Innovation_Case/initConda.sh
 
 conda activate /user/home/jp19060/.conda/envs/pifu
+
+~for ICON 
+conda activate icon
