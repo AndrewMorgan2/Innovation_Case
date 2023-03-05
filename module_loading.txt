@@ -14,3 +14,19 @@ conda activate /user/home/jp19060/.conda/envs/pifu
 
 ~for ICON 
 conda activate icon
+export PYPATH=/user/work/jp19060/miniconda3/envs/icon/bin/python3.8
+export PYOPENGL_PLATFORM=egl
+
+~debug batch 
+#!/bin/sh
+
+#SBATCH --job-name debug
+#SBATCH --nodes 1
+#SBATCH --time 00:20:00
+#SBATCH --account cosc027924
+#SBATCH --partition gpu
+#SBATCH --mem=32GB
+#SBATCH --gpus 1
+
+~python locate
+python -c "import os, sys; print(os.path.dirname(sys.executable))"

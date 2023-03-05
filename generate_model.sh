@@ -1,14 +1,17 @@
 #!/bin/sh
 
 #SBATCH --job-name gen_model
-#SBATCH --nodes 2
+#SBATCH --nodes 1
 #SBATCH --time 02:00:00
 #SBATCH --account cosc027924
 #SBATCH -o ./logs/log_%j.out # STDOUT out
 #SBATCH -e ./logs/log_%j.err # STDERR out
 #SBATCH --partition gpu
-#SBATCH --gpus 2
+#SBATCH --gpus 1
 #SBATCH --mem=32GB
+
+#Run to get rid of background
+#rembg p ./pifuhd/images/ ./pifuhd/sample_images/
 
 #Preprocess 
 cd pose-estimation

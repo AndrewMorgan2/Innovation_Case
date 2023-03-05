@@ -6,5 +6,6 @@ pifuhd/checkpoints/pifuhd.pt.2
 pifuhd/results/
 pifuhd/sample_images/
 pifuhd/images/
+processed_images/
 pifuhd/logs/
 logs/
