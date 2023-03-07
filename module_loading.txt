@@ -10,7 +10,7 @@ module load libs/opencv/4.0.0
 
 source /user/work/jp19060/Innovation_Case/initConda.sh
 
-conda activate /user/home/jp19060/.conda/envs/pifu
+export PYPATH=/user/work/jp19060/miniconda3/envs/pifuhd/bin/
 
 ~for ICON 
 conda activate icon
@@ -20,7 +20,7 @@ export PYOPENGL_PLATFORM=egl
 ~debug batch 
 #!/bin/sh
 
-#SBATCH --job-name debug
+#SBATCH --job-name name
 #SBATCH --nodes 1
 #SBATCH --time 00:20:00
 #SBATCH --account cosc027924
@@ -30,3 +30,14 @@ export PYOPENGL_PLATFORM=egl
 
 ~python locate
 python -c "import os, sys; print(os.path.dirname(sys.executable))"
+torch.cuda.is_available()
+
+~error after installing icon dependencies 
+rembg 2.0.30 requires numpy~=1.23.5, but you have numpy 1.24.2 which is incompatible.
+rembg 2.0.30 requires pillow~=9.3.0, but you have pillow 9.4.0 which is incompatible.
+rembg 2.0.30 requires scikit-image~=0.19.3, but you have scikit-image 0.19.1 which is incompatible.
+rembg 2.0.30 requires tqdm~=4.64.1, but you have tqdm 4.65.0 which is incompatible.
+numba 0.56.4 requires numpy<1.24,>=1.18, but you have numpy 1.24.2 which is incompatible.
+kornia 0.6.10 requires torch>=1.9.1, but you have torch 1.8.2+cu111 which is incompatible
+
+We are still having dependencies fail!
