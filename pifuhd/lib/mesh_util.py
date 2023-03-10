@@ -49,6 +49,9 @@ def reconstruction(net, cuda, calib_tensor,
     coords, mat = create_grid(resolution, resolution, resolution)
                               #b_min, b_max, transform=transform)
 
+    print("CORDS", coords)
+    print("MAT", mat)
+
     calib = calib_tensor[0].cpu().numpy()
 
     calib_inv = inv(calib)
