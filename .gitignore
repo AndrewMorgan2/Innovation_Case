@@ -1,4 +1,4 @@
-
+*.npy
 *.t7
 pifuhd/checkpoints/pifuhd.pt
 pifuhd/checkpoints/pifuhd.pt.1
@@ -9,3 +9,4 @@ pifuhd/images/
 processed_images/
 pifuhd/logs/
 logs/
+combing_models/data

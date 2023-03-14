@@ -31,7 +31,7 @@ from numpy.linalg import inv
 
 def reconstruction(net, cuda, calib_tensor,
                    resolution, b_min, b_max, thresh=0.5,
-                   use_octree=False, num_samples=10000, transform=None):
+                   use_octree=False, num_samples=10000, transform=None, name=""):
     '''
     Reconstruct meshes from sdf predicted by the network.
     :param net: a BasePixImpNet object. call image filter beforehead.
@@ -48,9 +48,6 @@ def reconstruction(net, cuda, calib_tensor,
     # and transforming matrix for grid coordinates to real world xyz
     coords, mat = create_grid(resolution, resolution, resolution)
                               #b_min, b_max, transform=transform)
-
-    print("CORDS", coords)
-    print("MAT", mat)
 
     calib = calib_tensor[0].cpu().numpy()
 
@@ -74,6 +71,18 @@ def reconstruction(net, cuda, calib_tensor,
         sdf = eval_grid_octree(coords, eval_func, num_samples=num_samples)
     else:
         sdf = eval_grid(coords, eval_func, num_samples=num_samples)
+    
+    #print("COORDINATES after process: ", coords.shape, " MAT ", mat)
+    #print("COORDINATES [1]: ", coords[0], " MAT [0]", mat[0])
+
+    coords_save_path = name[:-4] + '_cords'
+    mat_save_path = name[:-4] + '_mat'
+    sdf_save_path = name[:-4] + '_sdf'
+    calib_tensor_save_path = name[:-4] + '_calib_tensor'
+    np.save(coords_save_path, coords)
+    np.save(mat_save_path, mat)
+    np.save(calib_tensor_save_path, calib_tensor)
+    np.save(sdf_save_path, sdf)
 
     # Finally we do marching cubes
     try:
