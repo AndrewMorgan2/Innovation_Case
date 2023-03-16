@@ -3,6 +3,7 @@ from scipy.spatial import distance_matrix
 from scipy.spatial.transform import Rotation
 from scipy.spatial.distance import cdist
 from scipy.linalg import orthogonal_procrustes
+from scipy.ndimage import affine_transform
 
 threshold = 0.1
 
@@ -51,7 +52,27 @@ while residual > convergence_threshold and iteration < max_iterations:
     T = T_new
     iteration += 1
 
-print('done on' + iteration + 'iteration')
-# Apply the final transformation to SDF1 to align it with SDF2
-aligned_sdf1 = np.zeros_like(sdf2)
-np.save("algined_sdf_1", aligned_sdf1)
+print('done on' + str(iteration) + 'iteration')
+print("T:" + str(T))
+
+#x, y, z = np.meshgrid(np.arange(sdf1.shape[0]), np.arange(sdf1.shape[1]), np.arange(sdf1.shape[2]))
+#points = np.vstack((x.ravel(), y.ravel(), z.ravel(), np.ones(x.size)))
+#transformed_points = T @ points
+#transformed_sdf = np.reshape(transformed_points[:-1], sdf1.shape)
+
+#sdf_2_algined = points1 @ T[:3, :3].T + T[:3, 3]
+#transformed_sdf = np.reshape(sdf_2_algined[:-1], sdf2.shape)sdf_transformed = affine_transform(sdf, M[:3, :3], offset=M[:3, 3], order=1)
+
+transformed_sdf = affine_transform(sdf1, T[:3, :3], offset=T[:3, 3], order=1)
+
+np.save("sdf", transformed_sdf)
+np.save("transformed_sdf", transformed_sdf)
+
+print("new sdf shape:" + str(transformed_sdf.shape))
+
+aligned_sdf1 = np.minimum(sdf1, transformed_sdf)
+
+##Good to factor in depth as a mesure of certainty, bare in mind this is after translation meaning the front
+##Would have moved in correspondance to translation
+
+np.save("algined_new_sdf_1", aligned_sdf1)

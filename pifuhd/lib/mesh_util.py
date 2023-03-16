@@ -80,8 +80,8 @@ def reconstruction(net, cuda, calib_tensor,
     sdf_save_path = name[:-4] + '_sdf'
     calib_tensor_save_path = name[:-4] + '_calib_tensor'
     np.save(coords_save_path, coords)
-    np.save(mat_save_path, mat)
-    np.save(calib_tensor_save_path, calib_tensor)
+    np.save(mat_save_path, mat, allow_pickle=True)
+    np.save(calib_tensor_save_path, calib)
     np.save(sdf_save_path, sdf)
 
     # Finally we do marching cubes

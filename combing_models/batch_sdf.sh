@@ -1,6 +1,6 @@
 #!/bin/sh
 
-#SBATCH --job-name sdf_cloud
+#SBATCH --job-name sdf_comb
 #SBATCH --nodes 1
 #SBATCH --time 00:30:00
 #SBATCH --account cosc027924

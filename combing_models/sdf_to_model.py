@@ -4,11 +4,9 @@ from numpy.linalg import inv
 
 #Two differnet calib_tensor && mat 
 #So we go with either and see the difference 
-calib_tensor = np.load("Something")
-mat = np.load("Something")
-combined_sdf = np.load("Something")
-
-calib = calib_tensor[0].cpu().numpy()
+calib = np.load("data/result_1_512_calib_tensor.npy")
+mat = np.load("data/result_1_512_mat.npy")
+combined_sdf = np.load("algined_new_sdf_1.npy")
 
 calib_inv = inv(calib)
 # Finally we do marching cubes
@@ -22,7 +20,7 @@ try:
     if np.linalg.det(trans_mat[:3, :3]) < 0.0:
         faces = faces[:,::-1]
 
-    file = open('output_combined', 'w')
+    file = open('output/output_combined.obj', 'w')
 
     for v in verts:
         file.write('v %.4f %.4f %.4f\n' % (v[0], v[1], v[2]))
