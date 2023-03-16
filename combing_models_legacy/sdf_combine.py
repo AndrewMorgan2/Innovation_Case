@@ -63,9 +63,9 @@ print("T:" + str(T))
 #sdf_2_algined = points1 @ T[:3, :3].T + T[:3, 3]
 #transformed_sdf = np.reshape(sdf_2_algined[:-1], sdf2.shape)sdf_transformed = affine_transform(sdf, M[:3, :3], offset=M[:3, 3], order=1)
 
-transformed_sdf = affine_transform(sdf1, T[:3, :3], offset=T[:3, 3], order=1)
+transformed_sdf = affine_transform(sdf2, T[:3, :3], offset=T[:3, 3], order=1)
 
-np.save("sdf", transformed_sdf)
+np.save("sdf", sdf2)
 np.save("transformed_sdf", transformed_sdf)
 
 print("new sdf shape:" + str(transformed_sdf.shape))

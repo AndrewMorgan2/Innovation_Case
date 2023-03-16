@@ -6,7 +6,7 @@ from numpy.linalg import inv
 #So we go with either and see the difference 
 calib = np.load("data/result_1_512_calib_tensor.npy")
 mat = np.load("data/result_1_512_mat.npy")
-combined_sdf = np.load("algined_new_sdf_1.npy")
+combined_sdf = np.load("sdf.npy")
 
 calib_inv = inv(calib)
 # Finally we do marching cubes
