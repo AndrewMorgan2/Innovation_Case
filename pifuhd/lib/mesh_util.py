@@ -75,11 +75,11 @@ def reconstruction(net, cuda, calib_tensor,
     #print("COORDINATES after process: ", coords.shape, " MAT ", mat)
     #print("COORDINATES [1]: ", coords[0], " MAT [0]", mat[0])
 
-    coords_save_path = name[:-4] + '_cords'
+    #coords_save_path = name[:-4] + '_cords'
     mat_save_path = name[:-4] + '_mat'
     sdf_save_path = name[:-4] + '_sdf'
     calib_tensor_save_path = name[:-4] + '_calib_tensor'
-    np.save(coords_save_path, coords)
+    #np.save(coords_save_path, coords)
     np.save(mat_save_path, mat, allow_pickle=True)
     np.save(calib_tensor_save_path, calib)
     np.save(sdf_save_path, sdf)

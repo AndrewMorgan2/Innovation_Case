@@ -12,6 +12,10 @@ module load apps/singularity
 source /user/work/jp19060/Innovation_Case/initConda.sh
 
 export PYPATH=/user/work/jp19060/miniconda3/envs/pifuhd/bin/
+export HOME=/user/work/jp19060/
+
+/user/work/jp19060/miniconda3/envs/pifuhd/bin/pip
+which pip should be this ^
 
 conda activate pifuhd
 
