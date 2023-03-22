@@ -10,8 +10,6 @@
 #SBATCH --gpus 1
 #SBATCH --mem=32GB
 
-#Run to get rid of background
-#rembg p ./pifuhd/images/ ./pifuhd/sample_images/
 
 #Maybe have a check that nothing is in any of the results folder
 #Move that shit to a old_results folder
@@ -25,7 +23,7 @@
 #file-converter/input
 
 #Do the rembg stage here 
-rembg -p ./images ./pifuhd/sample_images
+#rembg -p ./images ./pifuhd/sample_images
 
 #Preprocess 
 cd pose-estimation
