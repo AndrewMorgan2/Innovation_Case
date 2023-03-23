@@ -19,6 +19,9 @@ which pip should be this ^
 
 conda activate pifuhd
 
+pip install open3d-python -U
+alias pip='/user/work/jp19060/miniconda3/envs/pifuhd/bin/pip'
+
 ~for ICON 
 conda activate icon
 export PYPATH=/user/work/jp19060/miniconda3/envs/icon/bin/python3.8
