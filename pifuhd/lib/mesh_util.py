@@ -25,7 +25,6 @@ from skimage import measure
 import numpy as np
 import torch
 from .sdf import create_grid, eval_grid_octree, eval_grid
-from skimage import measure
 
 from numpy.linalg import inv
 
