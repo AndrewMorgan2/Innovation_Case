@@ -14,10 +14,10 @@ source /user/work/jp19060/Innovation_Case/initConda.sh
 export PYPATH=/user/work/jp19060/miniconda3/envs/pifuhd/bin/
 export HOME=/user/work/jp19060/
 
+conda activate pifuhd
+
 /user/work/jp19060/miniconda3/envs/pifuhd/bin/pip
 which pip should be this ^
-
-conda activate pifuhd
 
 pip install open3d-python -U
 alias pip='/user/work/jp19060/miniconda3/envs/pifuhd/bin/pip'
