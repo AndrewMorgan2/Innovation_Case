@@ -65,6 +65,9 @@ def reconstruction(net, cuda, calib_tensor,
         pred = net.get_preds()[0][0]
         return pred.detach().cpu().numpy()
 
+    coords_save_path = name[:-4] + '_coords'
+    np.save(coords_save_path, coords)
+
     # Then we evaluate the grid
     if use_octree:
         sdf = eval_grid_octree(coords, eval_func, num_samples=num_samples)
