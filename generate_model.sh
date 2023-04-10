@@ -2,7 +2,7 @@
 
 #SBATCH --job-name gen_model
 #SBATCH --nodes 1
-#SBATCH --time 02:00:00
+#SBATCH --time 00:20:00
 #SBATCH --account cosc027924
 #SBATCH -o ./logs/log_%j.out # STDOUT out
 #SBATCH -e ./logs/log_%j.err # STDERR out

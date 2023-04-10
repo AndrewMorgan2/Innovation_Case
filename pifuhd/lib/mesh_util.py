@@ -65,24 +65,24 @@ def reconstruction(net, cuda, calib_tensor,
         pred = net.get_preds()[0][0]
         return pred.detach().cpu().numpy()
 
-    coords_save_path = name[:-4] + '_coords'
-    np.save(coords_save_path, coords)
+    #coords = np.load("/user/work/jp19060/Innovation_Case/coords_test.npy")
 
     # Then we evaluate the grid
     if use_octree:
         sdf = eval_grid_octree(coords, eval_func, num_samples=num_samples)
     else:
         sdf = eval_grid(coords, eval_func, num_samples=num_samples)
-    
-    #print("COORDINATES after process: ", coords.shape, " MAT ", mat)
-    #print("COORDINATES [1]: ", coords[0], " MAT [0]", mat[0])
 
+    net_save_path = name[:-4] + '_net'
     mat_save_path = name[:-4] + '_mat'
     sdf_save_path = name[:-4] + '_sdf'
     calib_tensor_save_path = name[:-4] + '_calib_tensor'
+    coords_save_path = name[:-4] + '_coords'
+    np.save(coords_save_path, coords, allow_pickle=True)
     np.save(mat_save_path, mat, allow_pickle=True)
-    np.save(calib_tensor_save_path, calib)
-    np.save(sdf_save_path, sdf)
+    np.save(calib_tensor_save_path, calib, allow_pickle=True)
+    np.save(sdf_save_path, sdf, allow_pickle=True)
+    np.save(net_save_path, net, allow_pickle=True)
 
     # Finally we do marching cubes
     try:
